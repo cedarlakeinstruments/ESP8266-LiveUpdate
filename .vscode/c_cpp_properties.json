@@ -8,8 +8,8 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/Users/lyndo/Documents/PlatformIO/Projects/220405-072557-esp01_1m/include",
-                "c:/Users/lyndo/Documents/PlatformIO/Projects/220405-072557-esp01_1m/src",
+                "c:/Users/lyndo/Documents/Projects/Arduino-Based/ESP8266-LiveUpdate/include",
+                "c:/Users/lyndo/Documents/Projects/Arduino-Based/ESP8266-LiveUpdate/src",
                 "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WebServer/src",
                 "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266mDNS/src",
                 "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
@@ -55,8 +55,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/lyndo/Documents/PlatformIO/Projects/220405-072557-esp01_1m/include",
-                    "c:/Users/lyndo/Documents/PlatformIO/Projects/220405-072557-esp01_1m/src",
+                    "c:/Users/lyndo/Documents/Projects/Arduino-Based/ESP8266-LiveUpdate/include",
+                    "c:/Users/lyndo/Documents/Projects/Arduino-Based/ESP8266-LiveUpdate/src",
                     "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WebServer/src",
                     "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266mDNS/src",
                     "C:/Users/lyndo/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",

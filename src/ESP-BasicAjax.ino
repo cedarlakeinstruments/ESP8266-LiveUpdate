@@ -38,6 +38,8 @@ unsigned long _timestamp = 0;
 
 ESP8266WebServer server(80);
 
+/// Returns HTML page as a string
+/// with parameter embedded
 char* buildPage(float temp)
 {
     const char *page =
@@ -85,7 +87,7 @@ char* buildPage(float temp)
     return pageBuffer;
 }
 
-// Handle call to base URL
+/// Handle call to base URL
 void handleRoot()
 {
     int val = analogRead(A0);
@@ -97,7 +99,7 @@ void handleRoot()
     digitalWrite(led, 1);
 }
 
-// URL not found
+/// URL not found
 void handleNotFound()
 {
     String message = "File Not Found\n\n";
@@ -115,6 +117,8 @@ void handleNotFound()
     server.send(404, "text/plain", message);
 }
 
+/// Standard Arduino setup
+/// Configure system, etc.
 void setup(void)
 {
     pinMode(led, OUTPUT);
@@ -164,11 +168,27 @@ void setup(void)
 // Main loop
 void loop(void)
 {
-    static unsigned long lastTime = 0;
-    _timestamp = millis() ;
-    if (millis() - lastTime > 500)
+    static uint16_t heartbeatDutyCycle = 0;
+    // Pace the loop to every 2ms
+    if (millis() - _timestamp < 2)
     {
-        lastTime = millis();
+        return;
+    }
+
+    _timestamp = millis();
+
+    // Pulse heartbeat LED
+    heartbeatDutyCycle++;
+    if (heartbeatDutyCycle == 1000)
+    {
+        // Turn on LED
+        digitalWrite(led, 0);
+        heartbeatDutyCycle = 0;
+    }
+    else if (heartbeatDutyCycle == 25)
+    {
+        // Turn off LED
+        digitalWrite(led, 1);
     }
 
     server.handleClient();
@@ -176,7 +196,7 @@ void loop(void)
 }
 
 
-// Send  data to client via AJAX call
+/// Send  data to client via AJAX call
 void sendAsyncData(void)
 {
     char tempData[20];
@@ -187,10 +207,12 @@ void sendAsyncData(void)
     Serial.print("AJAX call to send temperature data: "); Serial.print(v);Serial.print(" ");Serial.println(tempData);
 }
 
-// Get data from client
+/// Process form data and call button handlers
 void update(void)
 {
+    // List of button names
     static String values[] = {String("F1"), String("F2"), String("F3"), String("F4")};
+    // List of functions to execute
     static Function *functionList[] = {new F1(), new F2(), new F3(), new F4()};
 
     String message = "Number of args received: ";
