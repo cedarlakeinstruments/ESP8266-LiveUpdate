@@ -3,6 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "Function.h"
+#include "index-html.h"
 
 // **************************  Configuration ***********************
 // WiFiMode_t MODE = WIFI_STA;
@@ -42,48 +43,7 @@ ESP8266WebServer server(80);
 /// with parameter embedded
 char* buildPage(float temp)
 {
-    const char *page =
-        "<head>\
-            <style>\
-                body{background-color:black; color:yellow;font-family:sans-serif;font-size:12}\
-                .status{margin-left:30vw;padding-left:1vw;background-color:darkslateblue; color:white;width:30vw;font-size:24}\
-                .control{margin-left:30vw;padding-left:1vw;vertical-align:center;background-color:darkslateblue; color:white;width:30vw;height:10vh;font-size:24}\
-                .buttonStyle{height:75px;width:100px;font-size:24}\
-            </style>\
-            <script>\
-                setInterval(function()\
-                {\
-                    getData();\
-                }, 5000); \
-                function getData() {\
-                  var xhttp = new XMLHttpRequest();\
-                  xhttp.onreadystatechange = function() {\
-                    if (this.readyState == 4 && this.status == 200) {\
-                      document.getElementById('volts').innerHTML =\
-                      this.responseText;\
-                    }\
-                  };\
-                  xhttp.open('GET', 'read', true);\
-                  xhttp.send();\
-                }\
-            </script>\
-         </head>\
-         <body>\
-             <div id='volts' class='status'>%.2f</div>\
-             <div class='control'>&nbsp</div>\
-             <div class='control'>\
-                <form action='/update' method='GET'>\
-                    <span> \
-                    <input type = 'submit' id = 'button1' name = 'button1' value= 'F1' class='buttonStyle'>\
-                    <input type = 'submit' id = 'button2' name='button2' value= 'F2' class='buttonStyle'>\ 
-                    <input type = 'submit' id = 'button3' name='button3' value= 'F3' class='buttonStyle'>\ 
-                    <input type = 'submit' id = 'button4' name='button4' value= 'F4' class='buttonStyle'>\ 
-                    </span>\
-                </form>\
-            </div>\
-         </body>";
-
-    sprintf(pageBuffer, page, temp);
+    sprintf(pageBuffer, index_html, temp);
     return pageBuffer;
 }
 
@@ -169,8 +129,8 @@ void setup(void)
 void loop(void)
 {
     static uint16_t heartbeatDutyCycle = 0;
-    // Pace the loop to every 2ms
-    if (millis() - _timestamp < 2)
+    // Pace the loop to every 1ms
+    if (millis() - _timestamp < 1)
     {
         return;
     }
@@ -179,7 +139,7 @@ void loop(void)
 
     // Pulse heartbeat LED
     heartbeatDutyCycle++;
-    if (heartbeatDutyCycle == 1000)
+    if (heartbeatDutyCycle == 5000)
     {
         // Turn on LED
         digitalWrite(led, 0);
@@ -219,7 +179,7 @@ void update(void)
     message += server.args();
     Serial.println(server.arg(0));
 
-    for (int i = 0; i < sizeof(values)/sizeof(values[0]); i++)
+    for (unsigned int i = 0; i < sizeof(values)/sizeof(values[0]); i++)
     {
         if (server.arg(0).equals(values[i]) )
         {
